@@ -24,3 +24,21 @@ model User {
 
   @@map(name: "users")
 }
+
+// ====================
+// Store Models
+// ====================
+model Store{
+  id Int @id @default(autoincrement())
+  parentId Int? @map("parent_id")
+  code String? @db.VarChar(200)
+  name String? @db.VarChar(200)
+  address String?
+  phone String? @db.VarChar(15)
+  key String? @db.VarChar(200)
+  storeTypeId Int @map("store_type_id")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map("store")
+}
