@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes } from "@nestjs/common";
+import { CategoryService } from "./categories.service";
+import type { CreateCategoryDto } from "./dto/create-category.dto";
+import { ZodValidationPipe } from "src/common/pipes/zod.validation.pipe";
+import type { UpdateCategoryDto } from "./dto/update-category.dto";
 
 @Controller('categories')
-export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+export class CategoryController{
+    constructor(private readonly categoryService: CategoryService){}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
-  }
+    @Get()
+    async findAll() {
+        return await this.categoryService.findAll();
+    }
 
-  @Get()
-  findAll() {
-    return this.categoriesService.findAll();
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: number) {
+        return await this.categoryService.findOne(Number(id));
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(+id);
-  }
+    @Post()
+    @UsePipes(ZodValidationPipe)
+    async create(@Body() dto: CreateCategoryDto) {
+      return await this.categoryService.create(dto);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoriesService.update(+id, updateCategoryDto);
-  }
+    @Put(':id')
+    @UsePipes(ZodValidationPipe)
+    async update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
+      return await this.categoryService.update(+id, dto);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
-  }
+    @Delete(':id')
+    async deleteUser(@Param('id') id:number){
+        return await this.categoryService.delete(Number(id));
+    }
 }

@@ -16,9 +16,14 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  name String
+  name String?
   email String @unique
   username String
+  phone String?
+  address String?
+  gender String?
+  dateOfBirth String? @map(name: "date_of_birth")
+  placeOfBirth String? @map(name: "place_of_birth")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
@@ -41,4 +46,16 @@ model Store{
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
   @@map("store")
+}
+
+// ==================
+// Categories Models
+// ==================
+model Categories {
+  id Int @id @default(autoincrement())
+  name String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "categories")
 }
